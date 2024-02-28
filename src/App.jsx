@@ -2,17 +2,17 @@ import { ImSpoonKnife } from "react-icons/im";
 import { RiKnifeFill } from "react-icons/ri";
 
 export default function App() {
-  return <Nav />;
+  return <Header />;
 }
 
-function Nav() {
+function Header() {
   return (
-    <nav className="h-auto w-full p-4 bg-orange-accent flex justify-between">
+    <header className="h-auto w-full p-4 bg-orange-accent flex justify-between">
       <div className="logo flex space-x-2 text-main text-4xl">
         <span>
           <ImSpoonKnife />
         </span>
-        <span className="font-lobster hidden md:block tracking-widest">
+        <span className="font-lobster hidden sm:block tracking-widest">
           Recipino
         </span>
         <span>
@@ -25,6 +25,6 @@ function Nav() {
           Add Recipe
         </button>
       </div>
-    </nav>
+    </header>
   );
 }
