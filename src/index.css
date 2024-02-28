@@ -1,0 +1,41 @@
+@import url("https://fonts.googleapis.com/css2?family=Lobster&display=swap");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --mainText: #3e2723; /* deep brown */
+  --mainBack: #faf3e0; /* creamy off-white */
+  --accent1: #ffa500; /* muted orange */
+  --accent2: #ffd700; /* mustard yellow */
+  --accent3: #c19a6b; /* dusty rose */
+}
+.font-lobster {
+  font-family: "Lobster", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
+/* Define custom utility classes using Tailwind's @layer directive */
+@layer utilities {
+  .text-main {
+    color: var(--mainText);
+  }
+
+  .bg-mainback {
+    background-color: var(--mainBack);
+  }
+
+  .bg-orange-accent {
+    background-color: var(--accent1);
+  }
+
+  .bg-yellow-accent {
+    background-color: var(--accent2);
+  }
+
+  .bg-rose-accent {
+    background-color: var(--accent3);
+  }
+}
