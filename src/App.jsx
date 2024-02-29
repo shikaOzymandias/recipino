@@ -16,7 +16,7 @@ const initialRecipes = [
       "lime",
       "cilantro",
     ],
-    source: "http://soupaddict.com/2014/06/loaded-guacamole-vegetarian-tacos/",
+    source: "http://images.soupaddict.com/3-turmeric-drinks-featured.jpg",
   },
   {
     name: "Green Curry",
@@ -62,7 +62,7 @@ export default function App() {
 function Header() {
   return (
     <header className="h-auto w-full p-4 bg-orange-accent flex justify-between">
-      <div className="logo flex sm:space-x-4. text-main text-5xl">
+      <div className="logo flex sm:space-x-1 text-main text-5xl">
         <span>
           <ImSpoonKnife />
         </span>
@@ -86,10 +86,13 @@ function Header() {
 function RecipesList({ data }) {
   return (
     // Recipe List
-    <div className="w-full bg-mainback pb-80 pt-4 px-6 mx-auto ">
+    <div className="flex w-full bg-mainback pb-80 pt-4 px-10">
       {/* Grid List */}
-      <div className="grid grid-rows-1 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-5 place-items-center">
-        <Recipe data={data} />
+      <div className="grid mx-auto grid-row-1 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-y-20 gap-x-14 mt-10 mb-5 ">
+        <Recipe data={data[0]} />
+        <Recipe data={data[1]} />
+        <Recipe data={data[2]} />
+        <FormAddRecipe />
       </div>
     </div>
   );
@@ -97,16 +100,66 @@ function RecipesList({ data }) {
 
 function Recipe({ data }) {
   return (
-    <div className="w-64 bg-white shadow-md rounded-xl duration-500 hover:scale-105 hover:shadow-xl cursor-pointer">
+    <div className="w-64 bg-yellow-accent shadow-md rounded-xl duration-300 hover:scale-105 hover:shadow-xl cursor-pointer">
       <img
-        src={data[0].img}
-        alt={data[0].name}
-        className="h-80 object-cover rounded-t-xl"
+        src={data.img}
+        alt={data.name}
+        className="h-96 w-au object-cover rounded-t-xl"
       />
       <div className="px-4 py-3 w-64">
-        <span className="text-lg font-bold text-mainback block truncate capitalize">
-          {data[0].name}
+        <span className="text-lg font-bold text-mainback block capitalize text-center">
+          {data.name}
         </span>
+      </div>
+    </div>
+  );
+}
+
+function FormAddRecipe() {
+  return (
+    <div className="fixed z-10 inset-0 overflow-y-auto flex justify-center items-center">
+      <div className="bg-white w-1/2 p-6 rounded shadow-md relative">
+        <div className="flex justify-end">
+          <button
+            id="closeContactForm"
+            className="text-gray-700 hover:text-red-500"
+          >
+            X
+          </button>
+        </div>
+        <h2 className="text-2xl text-mainback font-bold mb-8">
+          Add New Recipe
+        </h2>
+
+        <form className="text-xs md:text-2xl">
+          <input
+            type="text"
+            className="w-full p-2 mb-4 border rounded-md focus:outline-none focus:border-yellow-200 text-mainback"
+            placeholder="Recipe Title"
+          />
+          <input
+            type="text"
+            className="w-full p-2 mb-4 border rounded-md focus:outline-none focus:border-yellow-200 text-mainback"
+            placeholder="Recipe Source"
+          />
+          <input
+            type="text"
+            className="w-full p-2 mb-4 border rounded-md focus:outline-none focus:border-yellow-200 text-mainback"
+            placeholder="Recipe Picture"
+          />
+          <input
+            type="text"
+            className="w-full p-2 mb-8 border rounded-md focus:outline-none focus:border-yellow-200 text-mainback"
+            placeholder="Enter ingredients seprated by comma"
+          />
+
+          <button
+            type="submit"
+            className="inline-flex items-center justify-center w-full rounded-lg bg-yellow-accent p-2 py-3 text-lg font-medium text-mainback outline-none hover:bg-yellow-400 duration-200"
+          >
+            Add Recipe
+          </button>
+        </form>
       </div>
     </div>
   );
