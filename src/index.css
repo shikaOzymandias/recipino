@@ -51,3 +51,18 @@ body {
   font-weight: 400;
   font-style: normal;
 }
+
+.tab-enter {
+  opacity: 0;
+}
+.tab-enter-active {
+  opacity: 1;
+  transition: all 500ms;
+}
+.tab-exit {
+  opacity: 1;
+}
+.tab-exit-active {
+  opacity: 0;
+  transition: all 500ms;
+}

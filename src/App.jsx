@@ -1,5 +1,8 @@
+import { useState } from "react";
+import { useRef } from "react";
 import { ImSpoonKnife } from "react-icons/im";
 import { RiKnifeFill } from "react-icons/ri";
+import { CSSTransition } from "react-transition-group";
 
 const initialRecipes = [
   {
@@ -50,16 +53,26 @@ const initialRecipes = [
   },
 ];
 export default function App() {
-  let data = initialRecipes;
+  const data = initialRecipes;
+  const [open, setOpen] = useState(false);
+
+  function handleShowForm() {
+    setOpen(!open);
+  }
+
   return (
     <>
-      <Header />
+      <Header onShowForm={handleShowForm} />
       <RecipesList data={data} />
+
+      <CSSTransition in={open} timeout={300} unmountOnExit>
+        <FormAddRecipe open={open} onCloseForm={handleShowForm} />
+      </CSSTransition>
     </>
   );
 }
 
-function Header() {
+function Header({ onShowForm }) {
   return (
     <header className="h-auto w-full p-4 bg-orange-accent flex justify-between">
       <div className="logo flex sm:space-x-1 text-main text-5xl">
@@ -75,7 +88,10 @@ function Header() {
       </div>
 
       <div>
-        <button className="py-3 px-1 rounded-xl shadow-sm font-medium bg-yellow-400 hover:bg-yellow-500 text-main text-xl">
+        <button
+          className="py-3 px-1 rounded-xl shadow-sm font-medium bg-yellow-400 hover:bg-yellow-500 text-main text-xl"
+          onClick={onShowForm}
+        >
           Add Recipe
         </button>
       </div>
@@ -92,7 +108,6 @@ function RecipesList({ data }) {
         <Recipe data={data[0]} />
         <Recipe data={data[1]} />
         <Recipe data={data[2]} />
-        <FormAddRecipe />
       </div>
     </div>
   );
@@ -115,14 +130,25 @@ function Recipe({ data }) {
   );
 }
 
-function FormAddRecipe() {
+function FormAddRecipe({ open, onCloseForm }) {
   return (
-    <div className="fixed z-10 inset-0 overflow-y-auto flex justify-center items-center">
-      <div className="bg-white w-1/2 p-6 rounded shadow-md relative">
+    // BackDrop
+    <div
+      className={`fixed z-10 inset-0 flex justify-center items-center ${
+        open ? "bg-black/20" : ""
+      }`}
+    >
+      {/* Modalw */}
+      <div
+        className={`tab bg-white w-1/2 p-6 rounded shadow transition-all duration-500 ${
+          !open ? "opacity-0 transform -translate-y-full scale-150" : ""
+        }`}
+      >
         <div className="flex justify-end">
           <button
             id="closeContactForm"
             className="text-gray-700 hover:text-red-500"
+            onClick={onCloseForm}
           >
             X
           </button>
@@ -130,6 +156,8 @@ function FormAddRecipe() {
         <h2 className="text-2xl text-mainback font-bold mb-8">
           Add New Recipe
         </h2>
+
+        {/* Form */}
 
         <form className="text-xs md:text-2xl">
           <input
