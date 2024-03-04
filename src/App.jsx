@@ -63,8 +63,8 @@ export default function App() {
   return (
     <>
       <Header onShowForm={handleShowForm} />
-      <RecipesList data={data} />
-
+      {/* <RecipesList data={data} /> */}
+      <RecipeCatalog />
       <CSSTransition in={open} timeout={300} unmountOnExit>
         <FormAddRecipe open={open} onCloseForm={handleShowForm} />
       </CSSTransition>
@@ -89,7 +89,7 @@ function Header({ onShowForm }) {
 
       <div>
         <button
-          className="py-3 px-1 rounded-xl shadow-sm font-medium bg-yellow-400 hover:bg-yellow-500 text-main text-xl"
+          className="py-3 px-1 rounded-xl shadow-sm font-medium bg-yellow-400 hover:bg-yellow-300 text-main text-xl transition-all duration-100"
           onClick={onShowForm}
         >
           Add Recipe
@@ -130,6 +130,74 @@ function Recipe({ data }) {
   );
 }
 
+function RecipeCatalog() {
+  return (
+    // Container
+    <div className="bg-mainback py-8 px-12 pb-24 sm:px-12">
+      {/* Recipe */}
+      <div className="max-w-6xl mx-auto bg-yellow-100 shadow-[3px_5px_10px_-3px_rgba(0,0,0,0.5)] border border-gray-100 px-8 py-8 flex flex-col md:flex-row">
+        {/* Image */}
+        <div className="md:flex-1 px-4">
+          <div className="flex justify-end">
+            <button className="text-4xl text-mainback hover:text-orange-accent mb-4 block md:hidden">
+              X
+            </button>
+          </div>
+          <div className="w-full mb-4">
+            <img
+              className=" w-full object-cover rounded-lg"
+              src="http://images.soupaddict.com/loaded-guacamole-vegetarian-tacos-3-062214.jpg"
+            />
+          </div>
+        </div>
+
+        {/* Recipe Info */}
+        <div className="md:flex-1 px-4 text-main">
+          {/* Close btn */}
+          <div className="flex justify-end">
+            <button className="text-4xl text-mainback hover:text-orange-accent hidden md:block">
+              X
+            </button>
+          </div>
+
+          {/* Food Name */}
+          <h2 className="text-4xl text-center text-orange-accent font-normal mt-4 mb-10">
+            Product Name
+          </h2>
+
+          {/* Action Buttons */}
+          <div className="flex justify-between font-light mb-4">
+            <button className="bg-orange-accent hover:bg-orange-400 text-white py-2 px-8 rounded text-xl transition-all duration-100 mx-1">
+              Source
+            </button>
+            <button className="bg-orange-accent hover:bg-orange-400 text-white py-2 px-8 rounded text-xl transition-all duration-100 mx-1">
+              Edit
+            </button>
+            <button className="bg-orange-accent hover:bg-orange-400 text-white py-2 px-8 rounded text-xl transition-all duration-100 mx-1">
+              Delete
+            </button>
+          </div>
+
+          {/* Ingeridients */}
+          <div className="w-full bg-orange-light text-mainback py-6 px-6 rounded">
+            <h3 className="text-3xl mb-2 tracking-widest font-medium">
+              ingredients
+            </h3>
+            <div className=" ml-2 tracking-wide text-2xl font-normal">
+              <ul className="list-inside list-disc">
+                <li>lemon</li>
+                <li>sugar</li>
+                <li>shir</li>
+                <li>water</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 function FormAddRecipe({ open, onCloseForm }) {
   return (
     // BackDrop
@@ -146,8 +214,7 @@ function FormAddRecipe({ open, onCloseForm }) {
       >
         <div className="flex justify-end">
           <button
-            id="closeContactForm"
-            className="text-gray-700 hover:text-red-500"
+            className="text-4xl text-mainback hover:text-red-500"
             onClick={onCloseForm}
           >
             X

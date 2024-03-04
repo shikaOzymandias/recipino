@@ -6,6 +6,7 @@
   --mainText: #3e2723; /* deep brown */
   --mainBack: #faf3e0; /* creamy off-white */
   --accent1: #ffa500; /* muted orange */
+  --accent1-2: hsl(39, 100%, 70%); /* muted orange */
   --accent2: #ffd700; /* mustard yellow */
   --accent3: #c19a6b; /* dusty rose */
 }
@@ -23,6 +24,13 @@
     background-color: var(--accent1);
   }
 
+  .bg-orange-light {
+    background-color: var(--accent1-2);
+  }
+
+  .text-orange-accent {
+    color: var(--accent1);
+  }
   .bg-yellow-accent {
     background-color: var(--accent2);
   }
