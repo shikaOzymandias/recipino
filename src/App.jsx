@@ -79,7 +79,7 @@ function Header({ onShowForm }) {
         <span>
           <ImSpoonKnife />
         </span>
-        <span className="font-lobster tracking-widest hidden sm:block">
+        <span className="font-lobster tracking-widest hidden md:block">
           Recipino
         </span>
         <span>
