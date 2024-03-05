@@ -63,8 +63,8 @@ export default function App() {
   return (
     <>
       <Header onShowForm={handleShowForm} />
-      {/* <RecipesList data={data} /> */}
-      <RecipeCatalog />
+      <RecipesList data={data} />
+      {/* <RecipeCatalog /> */}
       <CSSTransition in={open} timeout={300} unmountOnExit>
         <FormAddRecipe open={open} onCloseForm={handleShowForm} />
       </CSSTransition>
@@ -135,17 +135,20 @@ function RecipeCatalog() {
     // Container
     <div className="bg-mainback py-8 px-12 pb-24 sm:px-12">
       {/* Recipe */}
-      <div className="max-w-6xl mx-auto bg-yellow-100 shadow-[3px_5px_10px_-3px_rgba(0,0,0,0.5)] border border-gray-100 px-8 py-8 flex flex-col md:flex-row">
+      <div
+        className="max-w-6xl mx-auto bg-yellow-100
+      shadow-[3px_5px_10px_-3px_rgba(0,0,0,0.5)] border border-gray-100 px-8 py-8 flex flex-col lg:flex-row"
+      >
         {/* Image */}
         <div className="md:flex-1 px-4">
           <div className="flex justify-end">
-            <button className="text-4xl text-mainback hover:text-orange-accent mb-4 block md:hidden">
+            <button className="text-4xl text-mainback hover:text-orange-accent mb-4 block lg:hidden">
               X
             </button>
           </div>
-          <div className="w-full mb-4">
+          <div className="w-5/6 mx-auto mb-4">
             <img
-              className=" w-full object-cover rounded-lg"
+              className="w-full object-cover rounded-lg"
               src="http://images.soupaddict.com/loaded-guacamole-vegetarian-tacos-3-062214.jpg"
             />
           </div>
@@ -155,7 +158,7 @@ function RecipeCatalog() {
         <div className="md:flex-1 px-4 text-main">
           {/* Close btn */}
           <div className="flex justify-end">
-            <button className="text-4xl text-mainback hover:text-orange-accent hidden md:block">
+            <button className="text-4xl text-mainback hover:text-orange-accent hidden lg:block">
               X
             </button>
           </div>
