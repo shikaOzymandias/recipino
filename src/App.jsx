@@ -89,7 +89,7 @@ function Header({ onShowForm }) {
 
       <div>
         <button
-          className="py-3 px-1 rounded-xl shadow-sm font-medium bg-yellow-400 hover:bg-yellow-300 text-main text-xl transition-all duration-100"
+          className="py-3 px-1 rounded-xl shadow-sm font-medium bg-yellow-accent hover:bg-yellow-200 text-main text-xl transition-all duration-200"
           onClick={onShowForm}
         >
           Add Recipe
@@ -104,18 +104,18 @@ function RecipesList({ data }) {
     // Recipe List
     <div className="flex w-full bg-mainback pb-80 pt-4 px-10">
       {/* Grid List */}
-      <div className="grid mx-auto grid-row-1 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-y-20 gap-x-14 mt-10 mb-5 ">
-        <Recipe data={data[0]} />
-        <Recipe data={data[1]} />
-        <Recipe data={data[2]} />
-      </div>
+      <ul className="grid mx-auto grid-row-1 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-y-20 gap-x-14 mt-10 mb-5 ">
+        {initialRecipes.map((rec) => (
+          <Recipe data={rec} key={rec.name} />
+        ))}
+      </ul>
     </div>
   );
 }
 
 function Recipe({ data }) {
   return (
-    <div className="w-64 bg-yellow-accent shadow-md rounded-xl duration-300 hover:scale-105 hover:shadow-xl cursor-pointer">
+    <li className="w-64 bg-yellow-accent shadow-md rounded-xl duration-300 hover:scale-105 hover:shadow-xl cursor-pointer">
       <img
         src={data.img}
         alt={data.name}
@@ -126,7 +126,7 @@ function Recipe({ data }) {
           {data.name}
         </span>
       </div>
-    </div>
+    </li>
   );
 }
 
