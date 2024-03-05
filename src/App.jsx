@@ -6,9 +6,10 @@ import { CSSTransition } from "react-transition-group";
 
 const initialRecipes = [
   {
-    name: "Loaded Guacamole Tacos",
+    title: "Loaded Guacamole Tacos",
     nameLink: "LoadedGuacamoleTacos",
-    img: "http://images.soupaddict.com/loaded-guacamole-vegetarian-tacos-3-062214.jpg",
+    image:
+      "http://images.soupaddict.com/loaded-guacamole-vegetarian-tacos-3-062214.jpg",
     ingredients: [
       "fresh avocados",
       "black beans",
@@ -22,7 +23,7 @@ const initialRecipes = [
     source: "http://images.soupaddict.com/3-turmeric-drinks-featured.jpg",
   },
   {
-    name: "Green Curry",
+    title: "Green Curry",
     nameLink: "GreenCurry",
     ingredients: [
       "coconut milk",
@@ -33,12 +34,13 @@ const initialRecipes = [
       "asparagus",
       "cilantro",
     ],
-    img: "http://cookieandkate.com/images/2015/03/thai-green-curry-recipe-0.jpg",
+    image:
+      "http://cookieandkate.com/images/2015/03/thai-green-curry-recipe-0.jpg",
     source:
       "http://cookieandkate.com/2015/thai-green-curry-with-spring-vegetables/",
   },
   {
-    name: "Raspberry Chocolate Tart",
+    title: "Raspberry Chocolate Tart",
     nameLink: "RaspberryChocolateTart",
     ingredients: [
       "raspberry preserves",
@@ -47,7 +49,8 @@ const initialRecipes = [
       "coconut milk",
       "almond flour",
     ],
-    img: "http://www.bakerita.com/wp-content/uploads/2015/06/No-Bake-Raspberry-Chocolate-Truffle-Tart-Paleo-11.jpg",
+    image:
+      "http://www.bakerita.com/wp-content/uploads/2015/06/No-Bake-Raspberry-Chocolate-Truffle-Tart-Paleo-11.jpg",
     source:
       "http://www.bakerita.com/no-bake-raspberry-chocolate-tart-paleo-vegan-gf/",
   },
@@ -55,18 +58,26 @@ const initialRecipes = [
 export default function App() {
   const data = initialRecipes;
   const [open, setOpen] = useState(false);
-
+  const [recipes, setRecipes] = useState(data);
   function handleShowForm() {
-    setOpen(!open);
+    setOpen((open) => !open);
   }
 
+  function handleAddRecipe(recipe) {
+    setRecipes((recipes) => [...recipes, recipe]);
+    setOpen(false);
+  }
   return (
     <>
       <Header onShowForm={handleShowForm} />
-      <RecipesList data={data} />
+      <RecipesList recipes={recipes} />
       {/* <RecipeCatalog /> */}
       <CSSTransition in={open} timeout={300} unmountOnExit>
-        <FormAddRecipe open={open} onCloseForm={handleShowForm} />
+        <FormAddRecipe
+          open={open}
+          onCloseForm={handleShowForm}
+          onAddRecipe={handleAddRecipe}
+        />
       </CSSTransition>
     </>
   );
@@ -99,31 +110,31 @@ function Header({ onShowForm }) {
   );
 }
 
-function RecipesList({ data }) {
+function RecipesList({ recipes }) {
   return (
     // Recipe List
     <div className="flex w-full bg-mainback pb-80 pt-4 px-10">
       {/* Grid List */}
       <ul className="grid mx-auto grid-row-1 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-y-20 gap-x-14 mt-10 mb-5 ">
-        {initialRecipes.map((rec) => (
-          <Recipe data={rec} key={rec.name} />
+        {recipes.map((rec) => (
+          <Recipe recipe={rec} key={rec.name} />
         ))}
       </ul>
     </div>
   );
 }
 
-function Recipe({ data }) {
+function Recipe({ recipe }) {
   return (
     <li className="w-64 bg-yellow-accent shadow-md rounded-xl duration-300 hover:scale-105 hover:shadow-xl cursor-pointer">
       <img
-        src={data.img}
-        alt={data.name}
+        src={recipe.image}
+        alt={recipe.title}
         className="h-96 w-au object-cover rounded-t-xl"
       />
       <div className="px-4 py-3 w-64">
         <span className="text-lg font-bold text-mainback block capitalize text-center">
-          {data.name}
+          {recipe.title}
         </span>
       </div>
     </li>
@@ -201,7 +212,27 @@ function RecipeCatalog() {
   );
 }
 
-function FormAddRecipe({ open, onCloseForm }) {
+function FormAddRecipe({ open, onCloseForm, onAddRecipe }) {
+  const [title, setTitle] = useState("");
+  const [ingredients, setIngredients] = useState("");
+  const [image, setImage] = useState("");
+
+  function handleSubmit(e) {
+    e.preventDefault();
+
+    if (!image || !title) return;
+
+    const id = crypto.randomUUID();
+
+    const newRecipe = {
+      id,
+      title,
+      image,
+      ingredients,
+    };
+
+    onAddRecipe(newRecipe);
+  }
   return (
     // BackDrop
     <div
@@ -229,26 +260,33 @@ function FormAddRecipe({ open, onCloseForm }) {
 
         {/* Form */}
 
-        <form className="text-xs md:text-2xl">
+        <form className="text-xs md:text-2xl" onSubmit={handleSubmit}>
           <input
             type="text"
             className="w-full p-2 mb-4 border rounded-md focus:outline-none focus:border-yellow-200 text-mainback"
             placeholder="Recipe Title"
+            onChange={(e) => setTitle(e.target.value)}
+            value={title}
           />
-          <input
+          {/* <input
             type="text"
-            className="w-full p-2 mb-4 border rounded-md focus:outline-none focus:border-yellow-200 text-mainback"
+            className="w-full p-2 mb-4 border rounded-md focus:outline-none focus:border-yellow-200 text-mainback cursor-not-allowed"
             placeholder="Recipe Source"
-          />
+            disabled
+          /> */}
           <input
             type="text"
             className="w-full p-2 mb-4 border rounded-md focus:outline-none focus:border-yellow-200 text-mainback"
-            placeholder="Recipe Picture"
+            placeholder="Recipe Image"
+            onChange={(e) => setImage(e.target.value)}
+            value={image}
           />
           <input
             type="text"
             className="w-full p-2 mb-8 border rounded-md focus:outline-none focus:border-yellow-200 text-mainback"
             placeholder="Enter ingredients seprated by comma"
+            onChange={(e) => setIngredients(e.target.value)}
+            value={ingredients}
           />
 
           <button
