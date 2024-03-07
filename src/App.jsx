@@ -54,11 +54,44 @@ const initialRecipes = [
     source:
       "http://www.bakerita.com/no-bake-raspberry-chocolate-tart-paleo-vegan-gf/",
   },
+  {
+    title: "Kebab Sand",
+    nameLink: "RaspberryChocolateTart",
+    ingredients: [
+      "raspberry preserves",
+      "cocoa powder",
+      "fresh raspberries",
+      "coconut milk",
+      "almond flour",
+    ],
+    image:
+      "https://media.istockphoto.com/id/912629972/photo/chicken-kebab-with-bell-pepper.jpg?s=1024x1024&w=is&k=20&c=knCC5g2sD3dZ81P39HF0GnyD9DlZsEjPGBrhN0VUw7U=",
+    source:
+      "http://www.bakerita.com/no-bake-raspberry-chocolate-tart-paleo-vegan-gf/",
+  },
+  {
+    title: "Kebab Sand",
+    nameLink: "RaspberryChocolateTart",
+    ingredients: [
+      "raspberry preserves",
+      "cocoa powder",
+      "fresh raspberries",
+      "coconut milk",
+      "almond flour",
+    ],
+    image:
+      "https://media.istockphoto.com/id/176767997/photo/kebabs.jpg?s=1024x1024&w=is&k=20&c=ql1weY6nGlqp0CwtBXUqKYMCY3Wr3XQ3eQKUZ9GJoxw=",
+    source:
+      "http://www.bakerita.com/no-bake-raspberry-chocolate-tart-paleo-vegan-gf/",
+  },
 ];
+
 export default function App() {
   const data = initialRecipes;
   const [open, setOpen] = useState(false);
   const [recipes, setRecipes] = useState(data);
+  const [selectedRecipe, setSelectedRecipe] = useState(null);
+
   function handleShowForm() {
     setOpen((open) => !open);
   }
@@ -67,11 +100,25 @@ export default function App() {
     setRecipes((recipes) => [...recipes, recipe]);
     setOpen(false);
   }
+
+  function handleSelection(recipe) {
+    setSelectedRecipe(recipe);
+  }
   return (
     <>
       <Header onShowForm={handleShowForm} />
-      <RecipesList recipes={recipes} />
-      {/* <RecipeCatalog /> */}
+
+      {!selectedRecipe && (
+        <RecipesList
+          recipes={recipes}
+          onSelection={handleSelection}
+          selectedRecipe={selectedRecipe}
+        />
+      )}
+      {selectedRecipe && (
+        <RecipeCatalog recipe={selectedRecipe} onSelection={handleSelection} />
+      )}
+
       <CSSTransition in={open} timeout={300} unmountOnExit>
         <FormAddRecipe
           open={open}
@@ -110,27 +157,30 @@ function Header({ onShowForm }) {
   );
 }
 
-function RecipesList({ recipes }) {
+function RecipesList({ recipes, onSelection }) {
   return (
     // Recipe List
     <div className="flex w-full bg-mainback pb-80 pt-4 px-10">
       {/* Grid List */}
       <ul className="grid mx-auto grid-row-1 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-y-20 gap-x-14 mt-10 mb-5 ">
         {recipes.map((rec) => (
-          <Recipe recipe={rec} key={rec.name} />
+          <Recipe recipe={rec} key={rec.name} onSelection={onSelection} />
         ))}
       </ul>
     </div>
   );
 }
 
-function Recipe({ recipe }) {
+function Recipe({ recipe, onSelection }) {
   return (
-    <li className="w-64 bg-yellow-accent shadow-md rounded-xl duration-300 hover:scale-105 hover:shadow-xl cursor-pointer">
+    <li
+      className="w-64 bg-yellow-accent shadow-md rounded-xl duration-300 hover:scale-105 hover:shadow-xl cursor-pointer"
+      onClick={() => onSelection(recipe)}
+    >
       <img
         src={recipe.image}
         alt={recipe.title}
-        className="h-96 w-au object-cover rounded-t-xl"
+        className="h-96 w-auto object-cover rounded-t-xl"
       />
       <div className="px-4 py-3 w-64">
         <span className="text-lg font-bold text-mainback block capitalize text-center">
@@ -141,7 +191,8 @@ function Recipe({ recipe }) {
   );
 }
 
-function RecipeCatalog() {
+function RecipeCatalog({ recipe, onSelection }) {
+  const ingredients = recipe.ingredients;
   return (
     // Container
     <div className="bg-mainback py-8 px-12 pb-24 sm:px-12">
@@ -151,17 +202,17 @@ function RecipeCatalog() {
       shadow-[3px_5px_10px_-3px_rgba(0,0,0,0.5)] border border-gray-100 px-8 py-8 flex flex-col lg:flex-row"
       >
         {/* Image */}
-        <div className="md:flex-1 px-4">
+        <div className="md:flex-1 px-4 my-auto">
           <div className="flex justify-end">
-            <button className="text-4xl text-mainback hover:text-orange-accent mb-4 block lg:hidden">
+            <button
+              className="text-4xl text-mainback hover:text-orange-accent mb-4 block lg:hidden"
+              onClick={() => onSelection(null)}
+            >
               X
             </button>
           </div>
-          <div className="w-5/6 mx-auto mb-4">
-            <img
-              className="w-full object-cover rounded-lg"
-              src="http://images.soupaddict.com/loaded-guacamole-vegetarian-tacos-3-062214.jpg"
-            />
+          <div className="w-auto mx-auto mb-4">
+            <img className="w-full object-fill rounded-lg" src={recipe.image} />
           </div>
         </div>
 
@@ -169,14 +220,17 @@ function RecipeCatalog() {
         <div className="md:flex-1 px-4 text-main">
           {/* Close btn */}
           <div className="flex justify-end">
-            <button className="text-4xl text-mainback hover:text-orange-accent hidden lg:block">
+            <button
+              className="text-4xl text-mainback hover:text-orange-accent hidden lg:block"
+              onClick={() => onSelection(null)}
+            >
               X
             </button>
           </div>
 
           {/* Food Name */}
           <h2 className="text-4xl text-center text-orange-accent font-normal mt-4 mb-10">
-            Product Name
+            {recipe.title}
           </h2>
 
           {/* Action Buttons */}
@@ -199,10 +253,9 @@ function RecipeCatalog() {
             </h3>
             <div className=" ml-2 tracking-wide text-2xl font-normal">
               <ul className="list-inside list-disc">
-                <li>lemon</li>
-                <li>sugar</li>
-                <li>shir</li>
-                <li>water</li>
+                {ingredients.map((ing) => (
+                  <li>{ing}</li>
+                ))}
               </ul>
             </div>
           </div>
@@ -228,9 +281,10 @@ function FormAddRecipe({ open, onCloseForm, onAddRecipe }) {
       id,
       title,
       image,
-      ingredients,
+      ingredients: ingredients.split(","),
     };
 
+    console.log(newRecipe);
     onAddRecipe(newRecipe);
   }
   return (
