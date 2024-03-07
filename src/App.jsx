@@ -236,7 +236,9 @@ function RecipeCatalog({ recipe, onSelection }) {
           {/* Action Buttons */}
           <div className="flex justify-between font-light mb-4">
             <button className="bg-orange-accent hover:bg-orange-400 text-white py-2 px-8 rounded text-xl transition-all duration-100 mx-1">
-              Source
+              <a href={recipe.source} target="_blank">
+                Source
+              </a>
             </button>
             <button className="bg-orange-accent hover:bg-orange-400 text-white py-2 px-8 rounded text-xl transition-all duration-100 mx-1">
               Edit
@@ -269,6 +271,7 @@ function FormAddRecipe({ open, onCloseForm, onAddRecipe }) {
   const [title, setTitle] = useState("");
   const [ingredients, setIngredients] = useState("");
   const [image, setImage] = useState("");
+  const [source, setSource] = useState("");
 
   function handleSubmit(e) {
     e.preventDefault();
@@ -282,6 +285,7 @@ function FormAddRecipe({ open, onCloseForm, onAddRecipe }) {
       title,
       image,
       ingredients: ingredients.split(","),
+      source,
     };
 
     console.log(newRecipe);
@@ -322,12 +326,12 @@ function FormAddRecipe({ open, onCloseForm, onAddRecipe }) {
             onChange={(e) => setTitle(e.target.value)}
             value={title}
           />
-          {/* <input
+          <input
             type="text"
             className="w-full p-2 mb-4 border rounded-md focus:outline-none focus:border-yellow-200 text-mainback cursor-not-allowed"
-            placeholder="Recipe Source"
-            disabled
-          /> */}
+            placeholder="Recipe Source (Optional)"
+            onChange={(e) => setSource(e.target.value)}
+          />
           <input
             type="text"
             className="w-full p-2 mb-4 border rounded-md focus:outline-none focus:border-yellow-200 text-mainback"
