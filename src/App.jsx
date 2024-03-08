@@ -7,7 +7,7 @@ import { CSSTransition } from "react-transition-group";
 const initialRecipes = [
   {
     title: "Loaded Guacamole Tacos",
-    nameLink: "LoadedGuacamoleTacos",
+    id: crypto.randomUUID(),
     image:
       "http://images.soupaddict.com/loaded-guacamole-vegetarian-tacos-3-062214.jpg",
     ingredients: [
@@ -24,7 +24,7 @@ const initialRecipes = [
   },
   {
     title: "Green Curry",
-    nameLink: "GreenCurry",
+    id: crypto.randomUUID(),
     ingredients: [
       "coconut milk",
       "carrots",
@@ -39,51 +39,48 @@ const initialRecipes = [
     source:
       "http://cookieandkate.com/2015/thai-green-curry-with-spring-vegetables/",
   },
-  {
-    title: "Raspberry Chocolate Tart",
-    nameLink: "RaspberryChocolateTart",
-    ingredients: [
-      "raspberry preserves",
-      "cocoa powder",
-      "fresh raspberries",
-      "coconut milk",
-      "almond flour",
-    ],
-    image:
-      "http://www.bakerita.com/wp-content/uploads/2015/06/No-Bake-Raspberry-Chocolate-Truffle-Tart-Paleo-11.jpg",
-    source:
-      "http://www.bakerita.com/no-bake-raspberry-chocolate-tart-paleo-vegan-gf/",
-  },
-  {
-    title: "Kebab Sand",
-    nameLink: "RaspberryChocolateTart",
-    ingredients: [
-      "raspberry preserves",
-      "cocoa powder",
-      "fresh raspberries",
-      "coconut milk",
-      "almond flour",
-    ],
-    image:
-      "https://media.istockphoto.com/id/912629972/photo/chicken-kebab-with-bell-pepper.jpg?s=1024x1024&w=is&k=20&c=knCC5g2sD3dZ81P39HF0GnyD9DlZsEjPGBrhN0VUw7U=",
-    source:
-      "http://www.bakerita.com/no-bake-raspberry-chocolate-tart-paleo-vegan-gf/",
-  },
-  {
-    title: "Kebab Sand",
-    nameLink: "RaspberryChocolateTart",
-    ingredients: [
-      "raspberry preserves",
-      "cocoa powder",
-      "fresh raspberries",
-      "coconut milk",
-      "almond flour",
-    ],
-    image:
-      "https://media.istockphoto.com/id/176767997/photo/kebabs.jpg?s=1024x1024&w=is&k=20&c=ql1weY6nGlqp0CwtBXUqKYMCY3Wr3XQ3eQKUZ9GJoxw=",
-    source:
-      "http://www.bakerita.com/no-bake-raspberry-chocolate-tart-paleo-vegan-gf/",
-  },
+  // {
+  //   title: "Raspberry Chocolate Tart",
+  //   ingredients: [
+  //     "raspberry preserves",
+  //     "cocoa powder",
+  //     "fresh raspberries",
+  //     "coconut milk",
+  //     "almond flour",
+  //   ],
+  //   image:
+  //     "http://www.bakerita.com/wp-content/uploads/2015/06/No-Bake-Raspberry-Chocolate-Truffle-Tart-Paleo-11.jpg",
+  //   source:
+  //     "http://www.bakerita.com/no-bake-raspberry-chocolate-tart-paleo-vegan-gf/",
+  // },
+  // {
+  //   title: "Kebab Sand",
+  //   ingredients: [
+  //     "raspberry preserves",
+  //     "cocoa powder",
+  //     "fresh raspberries",
+  //     "coconut milk",
+  //     "almond flour",
+  //   ],
+  //   image:
+  //     "https://media.istockphoto.com/id/912629972/photo/chicken-kebab-with-bell-pepper.jpg?s=1024x1024&w=is&k=20&c=knCC5g2sD3dZ81P39HF0GnyD9DlZsEjPGBrhN0VUw7U=",
+  //   source:
+  //     "http://www.bakerita.com/no-bake-raspberry-chocolate-tart-paleo-vegan-gf/",
+  // },
+  // {
+  //   title: "Kebab Sand",
+  //   ingredients: [
+  //     "raspberry preserves",
+  //     "cocoa powder",
+  //     "fresh raspberries",
+  //     "coconut milk",
+  //     "almond flour",
+  //   ],
+  //   image:
+  //     "https://media.istockphoto.com/id/176767997/photo/kebabs.jpg?s=1024x1024&w=is&k=20&c=ql1weY6nGlqp0CwtBXUqKYMCY3Wr3XQ3eQKUZ9GJoxw=",
+  //   source:
+  //     "http://www.bakerita.com/no-bake-raspberry-chocolate-tart-paleo-vegan-gf/",
+  // },
 ];
 
 export default function App() {
@@ -104,8 +101,17 @@ export default function App() {
   function handleSelection(recipe) {
     setSelectedRecipe(recipe);
   }
+
+  function handleRemoveRecipes(id) {
+    const isConfirmed = window.confirm("Are you sure you want to delete?");
+    if (isConfirmed) {
+      setRecipes((recipes) => recipes.filter((recipe) => recipe.id !== id));
+      setSelectedRecipe(null);
+    }
+  }
+
   return (
-    <>
+    <div className="min-h-screen bg-mainback">
       <Header onShowForm={handleShowForm} />
 
       {!selectedRecipe && (
@@ -116,7 +122,11 @@ export default function App() {
         />
       )}
       {selectedRecipe && (
-        <RecipeCatalog recipe={selectedRecipe} onSelection={handleSelection} />
+        <RecipeCatalog
+          recipe={selectedRecipe}
+          onSelection={handleSelection}
+          onDeleteRecipe={handleRemoveRecipes}
+        />
       )}
 
       <CSSTransition in={open} timeout={300} unmountOnExit>
@@ -126,7 +136,7 @@ export default function App() {
           onAddRecipe={handleAddRecipe}
         />
       </CSSTransition>
-    </>
+    </div>
   );
 }
 
@@ -160,11 +170,11 @@ function Header({ onShowForm }) {
 function RecipesList({ recipes, onSelection }) {
   return (
     // Recipe List
-    <div className="flex w-full bg-mainback pb-80 pt-4 px-10">
+    <div className="flex w-full pt-4 px-10">
       {/* Grid List */}
       <ul className="grid mx-auto grid-row-1 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-y-20 gap-x-14 mt-10 mb-5 ">
         {recipes.map((rec) => (
-          <Recipe recipe={rec} key={rec.name} onSelection={onSelection} />
+          <Recipe recipe={rec} key={rec.id} onSelection={onSelection} />
         ))}
       </ul>
     </div>
@@ -191,7 +201,7 @@ function Recipe({ recipe, onSelection }) {
   );
 }
 
-function RecipeCatalog({ recipe, onSelection }) {
+function RecipeCatalog({ recipe, onSelection, onDeleteRecipe }) {
   const ingredients = recipe.ingredients;
   return (
     // Container
@@ -243,7 +253,10 @@ function RecipeCatalog({ recipe, onSelection }) {
             <button className="bg-orange-accent hover:bg-orange-400 text-white py-2 px-8 rounded text-xl transition-all duration-100 mx-1">
               Edit
             </button>
-            <button className="bg-orange-accent hover:bg-orange-400 text-white py-2 px-8 rounded text-xl transition-all duration-100 mx-1">
+            <button
+              className="bg-orange-accent hover:bg-orange-400 text-white py-2 px-8 rounded text-xl transition-all duration-100 mx-1"
+              onClick={() => onDeleteRecipe(recipe.id)}
+            >
               Delete
             </button>
           </div>
@@ -256,7 +269,7 @@ function RecipeCatalog({ recipe, onSelection }) {
             <div className=" ml-2 tracking-wide text-2xl font-normal">
               <ul className="list-inside list-disc">
                 {ingredients.map((ing) => (
-                  <li>{ing}</li>
+                  <li key={ing}>{ing}</li>
                 ))}
               </ul>
             </div>
@@ -328,7 +341,7 @@ function FormAddRecipe({ open, onCloseForm, onAddRecipe }) {
           />
           <input
             type="text"
-            className="w-full p-2 mb-4 border rounded-md focus:outline-none focus:border-yellow-200 text-mainback cursor-not-allowed"
+            className="w-full p-2 mb-4 border rounded-md focus:outline-none focus:border-yellow-200 text-mainback"
             placeholder="Recipe Source (Optional)"
             onChange={(e) => setSource(e.target.value)}
           />
