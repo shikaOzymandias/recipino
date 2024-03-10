@@ -39,34 +39,36 @@ const initialRecipes = [
     source:
       "http://cookieandkate.com/2015/thai-green-curry-with-spring-vegetables/",
   },
-  // {
-  //   title: "Raspberry Chocolate Tart",
-  //   ingredients: [
-  //     "raspberry preserves",
-  //     "cocoa powder",
-  //     "fresh raspberries",
-  //     "coconut milk",
-  //     "almond flour",
-  //   ],
-  //   image:
-  //     "http://www.bakerita.com/wp-content/uploads/2015/06/No-Bake-Raspberry-Chocolate-Truffle-Tart-Paleo-11.jpg",
-  //   source:
-  //     "http://www.bakerita.com/no-bake-raspberry-chocolate-tart-paleo-vegan-gf/",
-  // },
-  // {
-  //   title: "Kebab Sand",
-  //   ingredients: [
-  //     "raspberry preserves",
-  //     "cocoa powder",
-  //     "fresh raspberries",
-  //     "coconut milk",
-  //     "almond flour",
-  //   ],
-  //   image:
-  //     "https://media.istockphoto.com/id/912629972/photo/chicken-kebab-with-bell-pepper.jpg?s=1024x1024&w=is&k=20&c=knCC5g2sD3dZ81P39HF0GnyD9DlZsEjPGBrhN0VUw7U=",
-  //   source:
-  //     "http://www.bakerita.com/no-bake-raspberry-chocolate-tart-paleo-vegan-gf/",
-  // },
+  {
+    title: "Raspberry Chocolate Tart",
+    ingredients: [
+      "raspberry preserves",
+      "cocoa powder",
+      "fresh raspberries",
+      "coconut milk",
+      "almond flour",
+    ],
+    image:
+      "http://www.bakerita.com/wp-content/uploads/2015/06/No-Bake-Raspberry-Chocolate-Truffle-Tart-Paleo-11.jpg",
+    source:
+      "http://www.bakerita.com/no-bake-raspberry-chocolate-tart-paleo-vegan-gf/",
+    cooked: false,
+  },
+  {
+    title: "Kebab Sand",
+    ingredients: [
+      "raspberry preserves",
+      "cocoa powder",
+      "fresh raspberries",
+      "coconut milk",
+      "almond flour",
+    ],
+    image:
+      "https://media.istockphoto.com/id/912629972/photo/chicken-kebab-with-bell-pepper.jpg?s=1024x1024&w=is&k=20&c=knCC5g2sD3dZ81P39HF0GnyD9DlZsEjPGBrhN0VUw7U=",
+    source:
+      "http://www.bakerita.com/no-bake-raspberry-chocolate-tart-paleo-vegan-gf/",
+    cooked: false,
+  },
   // {
   //   title: "Kebab Sand",
   //   ingredients: [
@@ -229,7 +231,7 @@ function RecipeCatalog({
   const ingredients = recipe.ingredients;
   return (
     // Container
-    <div className="bg-mainback py-8 px-12 pb-24 sm:px-12">
+    <div className="bg-mainback w-full py-2 px-2 sm:px-12 sm:py-8 sm:pb-24">
       {/* Recipe */}
       <div
         className="max-w-6xl mx-auto bg-yellow-100
@@ -263,19 +265,19 @@ function RecipeCatalog({
           </div>
 
           {/* Food Name */}
-          <h2 className="text-4xl text-center text-orange-accent font-normal mt-4 mb-10">
+          <h2 className="text-2xl sm:text-4xl text-center text-orange-accent font-normal mt-4 mb-10">
             {recipe.title}
           </h2>
 
           {/* Action Buttons */}
-          <div className="flex justify-between font-light mb-4">
-            <button className="bg-orange-accent hover:bg-orange-400 text-white py-2 px-8 rounded text-xl transition-all duration-100 mx-1">
+          <div className="flex flex-col lg:flex-row font-light mb-4">
+            <button className="bg-orange-accent hover:bg-orange-400 text-white py-2 px-8 rounded text-xl transition-all duration-100 mx-1 mb-2 sm:mb-0">
               <a href={recipe.source} target="_blank">
                 Source
               </a>
             </button>
             <button
-              className="bg-orange-accent hover:bg-orange-400 text-white py-2 px-8 rounded text-xl transition-all duration-100 mx-1"
+              className="bg-orange-accent hover:bg-orange-400 text-white py-2 px-8 rounded text-xl transition-all duration-100 mx-1 mb-2 sm:mb-0"
               onClick={() => onToggleRecipe(recipe.id)}
             >
               {!recipe.cooked ? "Already cooked!" : "Clear"}
@@ -289,11 +291,11 @@ function RecipeCatalog({
           </div>
 
           {/* Ingeridients */}
-          <div className="w-full bg-orange-light text-mainback py-6 px-6 rounded">
+          <div className="w-full bg-orange-light text-mainback py-3 px-3 sm:py-6 sm:px-6 rounded">
             <h3 className="text-3xl mb-2 tracking-widest font-medium">
               ingredients
             </h3>
-            <div className=" ml-2 tracking-wide text-2xl font-normal">
+            <div className="ml-2 tracking-wide text-xl sm:text-2xl font-normal">
               <ul className="list-inside list-disc">
                 {ingredients.map((ing) => (
                   <li key={ing}>{ing}</li>
@@ -341,7 +343,7 @@ function FormAddRecipe({ open, onCloseForm, onAddRecipe }) {
     >
       {/* Modalw */}
       <div
-        className={`tab bg-white w-1/2 p-6 rounded shadow transition-all duration-500 ${
+        className={`tab bg-white w-5/6 sm:w-1/2 p-6 rounded shadow transition-all duration-500 ${
           !open ? "opacity-0 transform -translate-y-full scale-150" : ""
         }`}
       >
