@@ -85,17 +85,18 @@ const initialRecipes = [
 
 export default function App() {
   const data = initialRecipes;
-  const [open, setOpen] = useState(false);
+  const [open, setOpenForm] = useState(false);
   const [recipes, setRecipes] = useState(data);
   const [selectedRecipe, setSelectedRecipe] = useState(null);
 
   function handleShowForm() {
-    setOpen((open) => !open);
+    setOpenForm((open) => !open);
   }
 
   function handleAddRecipe(recipe) {
     setRecipes((recipes) => [...recipes, recipe]);
-    setOpen(false);
+    setOpenForm(false);
+    setSelectedRecipe(null);
   }
 
   function handleSelection(recipe) {
@@ -108,6 +109,15 @@ export default function App() {
       setRecipes((recipes) => recipes.filter((recipe) => recipe.id !== id));
       setSelectedRecipe(null);
     }
+  }
+
+  function handleToggleRecipe(id) {
+    setRecipes((recipes) =>
+      recipes.map((recipe) =>
+        recipe.id === id ? { ...recipe, cooked: !recipe.cooked } : recipe
+      )
+    );
+    setSelectedRecipe(null);
   }
 
   return (
@@ -126,6 +136,7 @@ export default function App() {
           recipe={selectedRecipe}
           onSelection={handleSelection}
           onDeleteRecipe={handleRemoveRecipes}
+          onToggleRecipe={handleToggleRecipe}
         />
       )}
 
@@ -184,16 +195,24 @@ function RecipesList({ recipes, onSelection }) {
 function Recipe({ recipe, onSelection }) {
   return (
     <li
-      className="w-64 bg-yellow-accent shadow-md rounded-xl duration-300 hover:scale-105 hover:shadow-xl cursor-pointer"
+      className={`w-64 bg-yellow-accent shadow-md rounded-xl duration-300 hover:scale-105 hover:shadow-xl cursor-pointer ${
+        recipe.cooked ? "grayscale" : ""
+      }`}
       onClick={() => onSelection(recipe)}
     >
-      <img
-        src={recipe.image}
-        alt={recipe.title}
-        className="h-96 w-auto object-cover rounded-t-xl"
-      />
+      <div className="">
+        <img
+          src={recipe.image}
+          alt={recipe.title}
+          className="h-96 w-auto object-cover rounded-t-xl"
+        />
+      </div>
       <div className="px-4 py-3 w-64">
-        <span className="text-lg font-bold text-mainback block capitalize text-center">
+        <span
+          className={`text-lg font-bold text-mainback block capitalize text-center ${
+            recipe.cooked ? "line-through" : ""
+          }`}
+        >
           {recipe.title}
         </span>
       </div>
@@ -201,7 +220,12 @@ function Recipe({ recipe, onSelection }) {
   );
 }
 
-function RecipeCatalog({ recipe, onSelection, onDeleteRecipe }) {
+function RecipeCatalog({
+  recipe,
+  onSelection,
+  onDeleteRecipe,
+  onToggleRecipe,
+}) {
   const ingredients = recipe.ingredients;
   return (
     // Container
@@ -250,8 +274,11 @@ function RecipeCatalog({ recipe, onSelection, onDeleteRecipe }) {
                 Source
               </a>
             </button>
-            <button className="bg-orange-accent hover:bg-orange-400 text-white py-2 px-8 rounded text-xl transition-all duration-100 mx-1">
-              Edit
+            <button
+              className="bg-orange-accent hover:bg-orange-400 text-white py-2 px-8 rounded text-xl transition-all duration-100 mx-1"
+              onClick={() => onToggleRecipe(recipe.id)}
+            >
+              {!recipe.cooked ? "Already cooked!" : "Clear"}
             </button>
             <button
               className="bg-orange-accent hover:bg-orange-400 text-white py-2 px-8 rounded text-xl transition-all duration-100 mx-1"
@@ -299,6 +326,7 @@ function FormAddRecipe({ open, onCloseForm, onAddRecipe }) {
       image,
       ingredients: ingredients.split(","),
       source,
+      cooked: false,
     };
 
     console.log(newRecipe);
