@@ -280,7 +280,7 @@ function RecipeCatalog({
           </h2>
 
           {/* Action Buttons */}
-          <div className="flex flex-col lg:flex-row font-light mb-4">
+          <div className="flex flex-col lg:flex-row font-light mb-4 justify-center">
             <button className="bg-orange-accent hover:bg-orange-400 text-white py-2 px-8 rounded text-xl transition-all duration-100 mx-1 mb-2 sm:mb-0">
               <a href={recipe.source} target="_blank">
                 Source
@@ -353,7 +353,7 @@ function FormAddRecipe({ open, onCloseForm, onAddRecipe }) {
     >
       {/* Modalw */}
       <div
-        className={`tab bg-white w-5/6 sm:w-1/2 p-6 rounded shadow transition-all duration-500 ${
+        className={`tab bg-white w-5/6 lg:w-1/2 p-6 rounded shadow transition-all duration-500 ${
           !open ? "opacity-0 transform -translate-y-full scale-150" : ""
         }`}
       >
@@ -371,7 +371,7 @@ function FormAddRecipe({ open, onCloseForm, onAddRecipe }) {
 
         {/* Form */}
 
-        <form className="text-xs md:text-2xl" onSubmit={handleSubmit}>
+        <form className="text-xl md:text-2xl" onSubmit={handleSubmit}>
           <input
             type="text"
             className="w-full p-2 mb-4 border rounded-md focus:outline-none focus:border-yellow-200 text-mainback"
