@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { useRef } from "react";
 import { ImSpoonKnife } from "react-icons/im";
 import { RiKnifeFill } from "react-icons/ri";
 import { CSSTransition } from "react-transition-group";
@@ -204,7 +203,11 @@ function Recipe({ recipe, onSelection }) {
     >
       <div className="">
         <img
-          src={recipe.image}
+          src={
+            recipe.image instanceof File
+              ? URL.createObjectURL(recipe.image)
+              : recipe.image
+          }
           alt={recipe.title}
           className="h-96 w-auto object-cover rounded-t-xl"
         />
@@ -248,7 +251,14 @@ function RecipeCatalog({
             </button>
           </div>
           <div className="w-auto mx-auto mb-4">
-            <img className="w-full object-fill rounded-lg" src={recipe.image} />
+            <img
+              className="w-full object-fill rounded-lg"
+              src={
+                recipe.image instanceof File
+                  ? URL.createObjectURL(recipe.image)
+                  : recipe.image
+              }
+            />
           </div>
         </div>
 
@@ -312,7 +322,7 @@ function RecipeCatalog({
 function FormAddRecipe({ open, onCloseForm, onAddRecipe }) {
   const [title, setTitle] = useState("");
   const [ingredients, setIngredients] = useState("");
-  const [image, setImage] = useState("");
+  const [image, setImage] = useState(null);
   const [source, setSource] = useState("");
 
   function handleSubmit(e) {
@@ -331,7 +341,7 @@ function FormAddRecipe({ open, onCloseForm, onAddRecipe }) {
       cooked: false,
     };
 
-    console.log(newRecipe);
+    console.log(newRecipe.image);
     onAddRecipe(newRecipe);
   }
   return (
@@ -374,13 +384,17 @@ function FormAddRecipe({ open, onCloseForm, onAddRecipe }) {
             className="w-full p-2 mb-4 border rounded-md focus:outline-none focus:border-yellow-200 text-mainback"
             placeholder="Recipe Source (Optional)"
             onChange={(e) => setSource(e.target.value)}
+            value={source}
           />
           <input
-            type="text"
+            type="file"
             className="w-full p-2 mb-4 border rounded-md focus:outline-none focus:border-yellow-200 text-mainback"
-            placeholder="Recipe Image"
-            onChange={(e) => setImage(e.target.value)}
-            value={image}
+            placeholder="Recipe Image Url"
+            onChange={(e) => {
+              console.log(e.target.files[0]);
+              console.log(image);
+              setImage(e.target.files[0]);
+            }}
           />
           <input
             type="text"
