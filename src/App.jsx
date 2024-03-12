@@ -4,23 +4,23 @@ import { RiKnifeFill } from "react-icons/ri";
 import { CSSTransition } from "react-transition-group";
 
 const initialRecipes = [
-  {
-    title: "Loaded Guacamole Tacos",
-    id: crypto.randomUUID(),
-    image:
-      "http://images.soupaddict.com/loaded-guacamole-vegetarian-tacos-3-062214.jpg",
-    ingredients: [
-      "fresh avocados",
-      "black beans",
-      "jalapenos",
-      "tomatoes or tomatillos",
-      "corn or small flour tortillas",
-      "corn",
-      "lime",
-      "cilantro",
-    ],
-    source: "http://images.soupaddict.com/3-turmeric-drinks-featured.jpg",
-  },
+  // {
+  //   title: "Loaded Guacamole Tacos",
+  //   id: crypto.randomUUID(),
+  //   image:
+  //     "http://images.soupaddict.com/loaded-guacamole-vegetarian-tacos-3-062214.jpg",
+  //   ingredients: [
+  //     "fresh avocados",
+  //     "black beans",
+  //     "jalapenos",
+  //     "tomatoes or tomatillos",
+  //     "corn or small flour tortillas",
+  //     "corn",
+  //     "lime",
+  //     "cilantro",
+  //   ],
+  //   source: "http://images.soupaddict.com/3-turmeric-drinks-featured.jpg",
+  // },
   {
     title: "Green Curry",
     id: crypto.randomUUID(),
@@ -39,6 +39,7 @@ const initialRecipes = [
       "http://cookieandkate.com/2015/thai-green-curry-with-spring-vegetables/",
   },
   {
+    id: crypto.randomUUID(),
     title: "Raspberry Chocolate Tart",
     ingredients: [
       "raspberry preserves",
@@ -54,6 +55,7 @@ const initialRecipes = [
     cooked: false,
   },
   {
+    id: crypto.randomUUID(),
     title: "Kebab Sand",
     ingredients: [
       "raspberry preserves",
