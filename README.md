@@ -2,6 +2,9 @@
 
 Recipino is a web application that allows users to create recipe.
 
+![Alt text](public/Recipino.jpg)
+![Alt text](public/Recipino-2.jpg.jpg)
+
 ## Features
 
 Add Recipes: Users can add new recipes with titles, images, ingredients, and sources.
