@@ -227,6 +227,90 @@ function Recipe({ recipe, onSelection }) {
   );
 }
 
+// Component for displaying recipe image
+function RecipeImage({ recipe, onSelection }) {
+  return (
+    <div className="md:flex-1 px-4 my-auto">
+      <div className="flex justify-end">
+        <button
+          className="text-4xl text-mainback hover:text-orange-accent mb-4 block lg:hidden"
+          onClick={() => onSelection(null)}
+        >
+          X
+        </button>
+      </div>
+      <div className="w-auto mx-auto mb-4">
+        <img
+          className="w-full object-fill rounded-lg"
+          src={
+            recipe.image instanceof File
+              ? URL.createObjectURL(recipe.image)
+              : recipe.image
+          }
+        />
+      </div>
+    </div>
+  );
+}
+
+// Component for displaying recipe information and action buttons
+function RecipeInfo({ recipe, onSelection, onToggleRecipe, onDeleteRecipe }) {
+  return (
+    <>
+      {/* Close btn */}
+      <div className="flex justify-end">
+        <button
+          className="text-4xl text-mainback hover:text-orange-accent hidden lg:block"
+          onClick={() => onSelection(null)}
+        >
+          X
+        </button>
+      </div>
+      {/* Food Name */}
+      <h2 className="text-2xl sm:text-4xl text-center text-orange-accent font-normal mt-4 mb-10">
+        {recipe.title}
+      </h2>
+      {/* Action Buttons */}
+      <div className="flex flex-col lg:flex-row font-light mb-4 justify-center">
+        <button className="bg-orange-accent hover:bg-orange-400 text-white py-2 px-8 rounded text-xl transition-all duration-100 mx-1 mb-2 sm:mb-0">
+          <a href={recipe.source} target="_blank">
+            Source
+          </a>
+        </button>
+        <button
+          className="bg-orange-accent hover:bg-orange-400 text-white py-2 px-8 rounded text-xl transition-all duration-100 mx-1 mb-2 sm:mb-0"
+          onClick={() => onToggleRecipe(recipe.id)}
+        >
+          {!recipe.cooked ? "Already cooked!" : "Clear"}
+        </button>
+        <button
+          className="bg-orange-accent hover:bg-orange-400 text-white py-2 px-8 rounded text-xl transition-all duration-100 mx-1"
+          onClick={() => onDeleteRecipe(recipe.id)}
+        >
+          Delete
+        </button>
+      </div>
+    </>
+  );
+}
+
+// Component for displaying ingredients list
+function IngredientsList({ ingredients }) {
+  return (
+    <div className="w-full bg-orange-light text-mainback py-3 px-3 sm:py-6 sm:px-6 rounded">
+      <h3 className="text-3xl mb-2 tracking-widest font-medium">ingredients</h3>
+      <div className="ml-2 tracking-wide text-xl sm:text-2xl font-normal">
+        <ul className="list-inside list-disc">
+          {ingredients.map((ing, index) => (
+            <li key={index}>{ing}</li>
+          ))}
+        </ul>
+      </div>
+    </div>
+  );
+}
+
+// Main RecipeCatalog component
 function RecipeCatalog({
   recipe,
   onSelection,
@@ -243,78 +327,20 @@ function RecipeCatalog({
       shadow-[3px_5px_10px_-3px_rgba(0,0,0,0.5)] border border-gray-100 px-8 py-8 flex flex-col lg:flex-row"
       >
         {/* Image */}
-        <div className="md:flex-1 px-4 my-auto">
-          <div className="flex justify-end">
-            <button
-              className="text-4xl text-mainback hover:text-orange-accent mb-4 block lg:hidden"
-              onClick={() => onSelection(null)}
-            >
-              X
-            </button>
-          </div>
-          <div className="w-auto mx-auto mb-4">
-            <img
-              className="w-full object-fill rounded-lg"
-              src={
-                recipe.image instanceof File
-                  ? URL.createObjectURL(recipe.image)
-                  : recipe.image
-              }
-            />
-          </div>
-        </div>
+        <RecipeImage recipe={recipe} onSelection={onSelection} />
 
-        {/* Recipe Info */}
+        {/* Recipe */}
         <div className="md:flex-1 px-4 text-main">
-          {/* Close btn */}
-          <div className="flex justify-end">
-            <button
-              className="text-4xl text-mainback hover:text-orange-accent hidden lg:block"
-              onClick={() => onSelection(null)}
-            >
-              X
-            </button>
-          </div>
+          {/* Recipe Info */}
+          <RecipeInfo
+            recipe={recipe}
+            onSelection={onSelection}
+            onToggleRecipe={onToggleRecipe}
+            onDeleteRecipe={onDeleteRecipe}
+          />
 
-          {/* Food Name */}
-          <h2 className="text-2xl sm:text-4xl text-center text-orange-accent font-normal mt-4 mb-10">
-            {recipe.title}
-          </h2>
-
-          {/* Action Buttons */}
-          <div className="flex flex-col lg:flex-row font-light mb-4 justify-center">
-            <button className="bg-orange-accent hover:bg-orange-400 text-white py-2 px-8 rounded text-xl transition-all duration-100 mx-1 mb-2 sm:mb-0">
-              <a href={recipe.source} target="_blank">
-                Source
-              </a>
-            </button>
-            <button
-              className="bg-orange-accent hover:bg-orange-400 text-white py-2 px-8 rounded text-xl transition-all duration-100 mx-1 mb-2 sm:mb-0"
-              onClick={() => onToggleRecipe(recipe.id)}
-            >
-              {!recipe.cooked ? "Already cooked!" : "Clear"}
-            </button>
-            <button
-              className="bg-orange-accent hover:bg-orange-400 text-white py-2 px-8 rounded text-xl transition-all duration-100 mx-1"
-              onClick={() => onDeleteRecipe(recipe.id)}
-            >
-              Delete
-            </button>
-          </div>
-
-          {/* Ingeridients */}
-          <div className="w-full bg-orange-light text-mainback py-3 px-3 sm:py-6 sm:px-6 rounded">
-            <h3 className="text-3xl mb-2 tracking-widest font-medium">
-              ingredients
-            </h3>
-            <div className="ml-2 tracking-wide text-xl sm:text-2xl font-normal">
-              <ul className="list-inside list-disc">
-                {ingredients.map((ing) => (
-                  <li key={ing}>{ing}</li>
-                ))}
-              </ul>
-            </div>
-          </div>
+          {/* Ingredients List */}
+          <IngredientsList ingredients={ingredients} />
         </div>
       </div>
     </div>
